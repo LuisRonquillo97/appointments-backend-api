@@ -1,10 +1,10 @@
 // src/application/services/parent-management.service.ts
 import { ParentModel } from '../../domain/model/parent.model';
-import { UserModel } from '../../domain/model/user.model';
 import { IParentRepository } from '../../domain/repositories/parent.repository.interface';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { PaginatedResult, PaginationOptions } from '../../domain/interfaces/pagination.interface';
 import { ParentNotFoundError, UserNotFoundError } from '../../domain/errors/parent-errors';
+
 
 export class ParentManagementService {
   constructor(
