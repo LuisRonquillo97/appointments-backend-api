@@ -1,9 +1,7 @@
-// src/domain/model/parent.model.ts
-import { States } from '../enums/states.enum';
+import { BaseModel } from './base.model';
 import { UserModel } from './user.model';
 
-export class ParentModel {
-  id: number = 0;
+export class ParentModel extends BaseModel {
   name: string = '';
   lastName: string = '';
   addressLine1: string = '';
@@ -12,13 +10,7 @@ export class ParentModel {
   zipCode: string = '';
   neighborhood: string = '';
   state: string = '';
-  isActive: boolean = false;
   user?: UserModel;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date;
-  deletedById?: number;
-
   // Domain logic methods
   getFullName(): string {
     return `${this.name} ${this.lastName}`;

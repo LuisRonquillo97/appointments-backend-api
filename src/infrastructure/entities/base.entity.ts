@@ -1,34 +1,15 @@
-// src/infrastructure/entities/user.ts
+// src/infrastructure/entities/base.entity.ts
 import {
-  Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
-import { UserRole } from '../../domain/enums/user-role.enum';
 
-@Entity()
-export class User {
+export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ unique: true })
-  email: string;
-
-  @Column({ nullable: false })
-  password: string;
-
-  @Column({ nullable: true })
-  name: string;
-
-  @Column({
-    type: 'enum',
-    enum: UserRole,
-    default: UserRole.CLIENT,
-  })
-  role: UserRole;
 
   @Column({ default: false })
   isActive: Boolean;

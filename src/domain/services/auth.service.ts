@@ -13,7 +13,6 @@ export class AuthService {
   }
 
   generateToken(user: UserModel): string {
-    // Use type assertion to avoid TypeScript errors
     return jwt.sign(
       {
         id: user.id,

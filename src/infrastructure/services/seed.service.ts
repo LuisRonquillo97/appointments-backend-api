@@ -1,4 +1,4 @@
-import { User } from '../entities/user';
+import { User } from '../entities/user.entity';
 import { AppDataSource } from '../config/database';
 import { AuthService } from '../../domain/services/auth.service';
 import { UserRole } from '../../domain/enums/user-role.enum';

@@ -1,12 +1,17 @@
-// src/infrastructure/mappers/parent.mapper.ts
-import { Parent } from '../entities/parent';
+import { Parent } from '../entities/parent.entity';
 import { ParentModel } from '../../domain/model/parent.model';
 import { UserMapper } from './user.mapper';
+import { BaseMapper } from './base.mapper';
 
-export class ParentMapper {
-  static toDomain(entity: Parent): ParentModel {
+export class ParentMapper extends BaseMapper<Parent, ParentModel> {
+  userMapper: UserMapper = new UserMapper();
+  toDomain(entity: Parent): ParentModel {
     const model = new ParentModel();
-    model.id = entity.id;
+
+    // Map base properties
+    this.mapBasePropertiesToDomain(entity, model);
+
+    // Map specific properties
     model.name = entity.name;
     model.lastName = entity.lastName;
     model.addressLine1 = entity.addressLine1;
@@ -15,28 +20,21 @@ export class ParentMapper {
     model.zipCode = entity.zipCode;
     model.neighborhood = entity.neighborhood;
     model.state = entity.state;
-    model.isActive = entity.isActive as boolean;
-    model.createdAt = entity.createdAt;
-    model.updatedAt = entity.updatedAt;
 
     if (entity.user) {
-      model.user = UserMapper.toDomain(entity.user);
-    }
-
-    if (entity.deletedAt) {
-      model.deletedAt = entity.deletedAt;
-    }
-
-    if (entity.deletedById) {
-      model.deletedById = entity.deletedById;
+      model.user = this.userMapper.toDomain(entity.user);
     }
 
     return model;
   }
 
-  static toEntity(model: ParentModel): Parent {
+  toEntity(model: ParentModel): Parent {
     const entity = new Parent();
-    entity.id = model.id;
+
+    // Map base properties
+    this.mapBasePropertiesToEntity(model, entity);
+
+    // Map specific properties
     entity.name = model.name;
     entity.lastName = model.lastName;
     entity.addressLine1 = model.addressLine1;
@@ -44,20 +42,9 @@ export class ParentMapper {
     entity.zipCode = model.zipCode;
     entity.neighborhood = model.neighborhood;
     entity.state = model.state;
-    entity.isActive = model.isActive;
-    entity.createdAt = model.createdAt;
-    entity.updatedAt = model.updatedAt;
 
     if (model.user) {
-      entity.user = UserMapper.toEntity(model.user);
-    }
-
-    if (model.deletedAt) {
-      entity.deletedAt = model.deletedAt;
-    }
-
-    if (model.deletedById) {
-      entity.deletedById = model.deletedById;
+      entity.user = this.userMapper.toEntity(model.user);
     }
 
     if (model.addressLine2) {

@@ -1,5 +1,5 @@
 import { AppDataSource } from '../config/database';
-import { Parent } from '../entities/parent';
+import { Parent } from '../entities/parent.entity';
 import { ParentModel } from '../../domain/model/parent.model';
 import { IParentRepository } from '../../domain/repositories/parent.repository.interface';
 import { ParentMapper } from '../mappers/parent.mapper';
@@ -9,6 +9,8 @@ import { IsNull, Not } from 'typeorm';
 
 export class ParentRepository implements IParentRepository {
   private repository = AppDataSource.getRepository(Parent);
+  private parentMapper: ParentMapper = new ParentMapper();
+  private userMapper: UserMapper = new UserMapper();
 
   async findById(id: number): Promise<ParentModel | null> {
     const entity = await this.repository.findOne({
@@ -16,7 +18,7 @@ export class ParentRepository implements IParentRepository {
       relations: ['user'], // Include the related user
     });
 
-    return entity ? ParentMapper.toDomain(entity) : null;
+    return entity ? this.parentMapper.toDomain(entity) : null;
   }
 
   async findByUserId(userId: number, includeDeleted: boolean = false): Promise<ParentModel | null> {
@@ -33,7 +35,7 @@ export class ParentRepository implements IParentRepository {
 
     const entity = await this.repository.findOne(queryOptions);
 
-    return entity ? ParentMapper.toDomain(entity) : null;
+    return entity ? this.parentMapper.toDomain(entity) : null;
   }
 
   async findAll(options?: PaginationOptions): Promise<PaginatedResult<ParentModel>> {
@@ -52,7 +54,7 @@ export class ParentRepository implements IParentRepository {
     });
 
     // Map entities to domain models
-    const data = entities.map((entity) => ParentMapper.toDomain(entity));
+    const data = entities.map((entity) => this.parentMapper.toDomain(entity));
 
     // Calculate total pages
     const totalPages = Math.ceil(total / limit);
@@ -85,7 +87,7 @@ export class ParentRepository implements IParentRepository {
     // Handle user relationship
     if (parentData.user) {
       // Use the UserMapper directly instead of going through ParentMapper
-      const userEntity = parentData.user ? UserMapper.toEntity(parentData.user) : null;
+      const userEntity = parentData.user ? this.userMapper.toEntity(parentData.user) : null;
       if (userEntity) {
         parentEntity.user = userEntity;
       }
@@ -95,7 +97,7 @@ export class ParentRepository implements IParentRepository {
     const savedEntity = await this.repository.save(parentEntity);
 
     // Convert back to domain model
-    return ParentMapper.toDomain(savedEntity);
+    return this.parentMapper.toDomain(savedEntity);
   }
 
   async update(id: number, parentData: Partial<ParentModel>): Promise<ParentModel | null> {
@@ -121,7 +123,7 @@ export class ParentRepository implements IParentRepository {
     const updatedEntity = await this.repository.save(existingParent);
 
     // Convert back to domain model
-    return ParentMapper.toDomain(updatedEntity);
+    return this.parentMapper.toDomain(updatedEntity);
   }
 
   async softDelete(id: number, deletedById: number): Promise<boolean> {

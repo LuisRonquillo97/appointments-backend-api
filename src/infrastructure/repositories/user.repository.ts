@@ -1,11 +1,12 @@
 import { AppDataSource } from '../config/database';
-import { User } from '../entities/user';
+import { User } from '../entities/user.entity';
 import { UserModel } from '../../domain/model/user.model';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { UserMapper } from '../mappers/user.mapper';
 
 export class UserRepository implements IUserRepository {
   private repository = AppDataSource.getRepository(User);
+  private userMapper: UserMapper = new UserMapper();
 
   async findByEmail(email: string): Promise<UserModel | null> {
     const entity = await this.repository.findOne({
@@ -13,7 +14,7 @@ export class UserRepository implements IUserRepository {
         email,
       },
     });
-    return entity ? UserMapper.toDomain(entity) : null;
+    return entity ? this.userMapper.toDomain(entity) : null;
   }
 
   async findById(id: number): Promise<UserModel | null> {
@@ -22,13 +23,13 @@ export class UserRepository implements IUserRepository {
         id,
       },
     });
-    return entity ? UserMapper.toDomain(entity) : null;
+    return entity ? this.userMapper.toDomain(entity) : null;
   }
 
   async create(userData: Partial<UserModel>): Promise<UserModel> {
-    const entity = this.repository.create(UserMapper.toEntity(userData as UserModel));
+    const entity = this.repository.create(this.userMapper.toEntity(userData as UserModel));
     const savedEntity = await this.repository.save(entity);
-    return UserMapper.toDomain(savedEntity);
+    return this.userMapper.toDomain(savedEntity);
   }
 
   async update(id: number, userData: Partial<UserModel>): Promise<UserModel | null> {
