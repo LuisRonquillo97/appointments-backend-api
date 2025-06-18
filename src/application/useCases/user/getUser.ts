@@ -1,5 +1,6 @@
-import { User } from '../../../domain/entities/user';
+// src/application/useCases/user/getUser.ts
 import { UserRepository } from '../../../domain/repositories/user.repository';
+import { UserResponseDto } from '../../dtos/UserDto';
 
 export class GetUserUseCase {
   private userRepository: UserRepository;
@@ -8,7 +9,19 @@ export class GetUserUseCase {
     this.userRepository = userRepository;
   }
 
-  async execute(id: string): Promise<User | null> {
-    return this.userRepository.findById(id);
+  async execute(id: string): Promise<UserResponseDto | null> {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      return null;
+    }
+
+    return {
+      id: user.id!,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt!,
+      updatedAt: user.updatedAt!,
+    };
   }
 }

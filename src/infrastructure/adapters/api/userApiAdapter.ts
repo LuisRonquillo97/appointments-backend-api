@@ -1,6 +1,5 @@
-// src/infrastructure/http/controllers/user.controller.ts
+// src/infrastructure/adapters/api/userApiAdapter.ts
 import { Request, Response, NextFunction } from 'express';
-import { Container } from '../../di/container';
 import { CreateUserUseCase } from '../../../application/useCases/user/createUser';
 import { GetUserUseCase } from '../../../application/useCases/user/getUser';
 import { ListUsersUseCase } from '../../../application/useCases/user/listUsers';
@@ -8,21 +7,21 @@ import { UpdateUserUseCase } from '../../../application/useCases/user/updateUser
 import { DeleteUserUseCase } from '../../../application/useCases/user/deleteUser';
 import { CreateUserDto, UpdateUserDto } from '../../../application/dtos/UserDto';
 
-export class UserController {
-  private container: Container;
-
-  constructor() {
-    this.container = Container.getInstance();
-  }
+export class UserApiAdapter {
+  constructor(
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly getUserUseCase: GetUserUseCase,
+    private readonly listUsersUseCase: ListUsersUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
+    private readonly deleteUserUseCase: DeleteUserUseCase,
+  ) {}
 
   getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
-      const listUsersUseCase = this.container.get<ListUsersUseCase>('ListUsersUseCase');
-      const result = await listUsersUseCase.execute({ page, limit });
-
+      const result = await this.listUsersUseCase.execute({ page, limit });
       res.json(result);
     } catch (error) {
       next(error);
@@ -32,8 +31,7 @@ export class UserController {
   getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const getUserUseCase = this.container.get<GetUserUseCase>('GetUserUseCase');
-      const user = await getUserUseCase.execute(id);
+      const user = await this.getUserUseCase.execute(id);
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -48,8 +46,7 @@ export class UserController {
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: CreateUserDto = req.body;
-      const createUserUseCase = this.container.get<CreateUserUseCase>('CreateUserUseCase');
-      const newUser = await createUserUseCase.execute(userData);
+      const newUser = await this.createUserUseCase.execute(userData);
 
       res.status(201).json(newUser);
     } catch (error) {
@@ -62,8 +59,7 @@ export class UserController {
       const { id } = req.params;
       const userData: UpdateUserDto = req.body;
 
-      const updateUserUseCase = this.container.get<UpdateUserUseCase>('UpdateUserUseCase');
-      const updatedUser = await updateUserUseCase.execute(id, userData);
+      const updatedUser = await this.updateUserUseCase.execute(id, userData);
 
       if (!updatedUser) {
         return res.status(404).json({ message: 'User not found' });
@@ -78,9 +74,7 @@ export class UserController {
   deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-
-      const deleteUserUseCase = this.container.get<DeleteUserUseCase>('DeleteUserUseCase');
-      const deleted = await deleteUserUseCase.execute(id);
+      const deleted = await this.deleteUserUseCase.execute(id);
 
       if (!deleted) {
         return res.status(404).json({ message: 'User not found' });
