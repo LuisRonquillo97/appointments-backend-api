@@ -1,24 +1,29 @@
-# Dependency directories
+# Dependencies
 node_modules/
-npm-debug.log
 
-# Build output
+# Build
 dist/
 build/
 
-# Environment variables
+# Environment
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 
-# IDE files
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE
 .idea/
 .vscode/
-*.sublime-workspace
-*.sublime-project
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
