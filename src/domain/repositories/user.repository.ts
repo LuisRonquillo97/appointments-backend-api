@@ -5,6 +5,7 @@ export interface UserRepository {
   findById(id: string): Promise<User | null>;
   findAll(options?: PaginationOptions): Promise<PaginatedResult<User>>;
   create(user: User): Promise<User>;
-  update(id: string, user: Partial<User>): Promise<User | null>;
-  delete(id: string): Promise<boolean>;
+  update(id: string, user: Partial<User>): Promise<User>;
+  delete(id: string, softDelete?: boolean): Promise<boolean>;
+  findByEmail(email: string): Promise<User | null>;
 }

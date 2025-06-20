@@ -1,11 +1,4 @@
-// src/domain/errors/userErrors.ts
 import { DomainError } from './domainError';
-
-export class UserNotFoundError extends DomainError {
-  constructor(id: string) {
-    super(`User with id ${id} not found`);
-  }
-}
 
 export class InvalidUserDataError extends DomainError {
   constructor(message: string) {
@@ -16,5 +9,11 @@ export class InvalidUserDataError extends DomainError {
 export class EmailAlreadyExistsError extends DomainError {
   constructor(email: string) {
     super(`User with email ${email} already exists`);
+  }
+}
+
+export class UserAlreadyDeletedError extends DomainError {
+  constructor(id: string) {
+    super(`User with id ${id} is already deleted`);
   }
 }

@@ -1,4 +1,3 @@
-// src/domain/events/userEvents.ts
 import { DomainEvent } from './domainEvent';
 import { User } from '../entities/user';
 

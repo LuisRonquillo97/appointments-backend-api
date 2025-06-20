@@ -1,4 +1,3 @@
-// src/config/index.ts
 import dotenv from 'dotenv';
 import { DataSourceOptions } from 'typeorm';
 
@@ -18,6 +17,9 @@ interface Config {
   };
 }
 
+// Definir el tipo de base de datos de manera segura
+type SupportedDBType = 'mysql' | 'mariadb' | 'postgres' | 'sqlite' | 'mssql';
+
 const config: Config = {
   server: {
     port: parseInt(process.env.PORT || '3000', 10),
@@ -25,7 +27,7 @@ const config: Config = {
   },
   database: {
     options: {
-      type: (process.env.DB_TYPE || 'mysql') as any,
+      type: (process.env.DB_TYPE || 'mysql') as SupportedDBType,
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT || '3306', 10),
       username: process.env.DB_USERNAME || 'root',
@@ -33,8 +35,6 @@ const config: Config = {
       database: process.env.DB_NAME || 'appointments',
       synchronize: process.env.DB_SYNCHRONIZE === 'true',
       logging: process.env.DB_LOGGING === 'true',
-      entities: ['src/infrastructure/entities/**/*.ts'],
-      migrations: ['src/infrastructure/database/migrations/**/*.ts'],
     },
   },
   auth: {

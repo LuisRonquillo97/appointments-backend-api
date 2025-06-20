@@ -1,4 +1,3 @@
-// src/infrastructure/database/index.ts
 import { AppDataSource } from './datasource';
 
 export const initializeDatabase = async () => {

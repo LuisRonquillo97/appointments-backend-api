@@ -26,6 +26,9 @@ export class UserEntity {
   @Column({ nullable: true })
   salt!: string;
 
+  @Column({ default: true })
+  isActive!: boolean;
+
   @CreateDateColumn()
   createdAt!: Date;
 

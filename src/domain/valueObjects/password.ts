@@ -1,4 +1,3 @@
-// src/domain/valueObjects/password.ts
 import * as crypto from 'crypto';
 import { InvalidUserDataError } from '../errors/userErrors';
 

@@ -14,7 +14,10 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
     "deploy": "serverless deploy",
     "deploy:prod": "serverless deploy --stage prod",
-    "offline": "serverless offline"
+    "offline": "serverless offline",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/infrastructure/database/datasource.ts",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/infrastructure/database/datasource.ts",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/infrastructure/database/datasource.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",

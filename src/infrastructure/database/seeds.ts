@@ -1,4 +1,3 @@
-// src/infrastructure/database/seeds.ts
 import { DataSource } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 

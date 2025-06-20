@@ -1,4 +1,3 @@
-// src/domain/valueObjects/email.ts
 import { InvalidUserDataError } from '../errors/userErrors';
 
 export class Email {

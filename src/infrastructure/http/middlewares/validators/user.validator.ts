@@ -1,4 +1,3 @@
-// src/infrastructure/http/middlewares/validators/user.validator.ts
 import { body } from 'express-validator';
 
 export const createUserValidator = [

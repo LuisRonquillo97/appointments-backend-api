@@ -1,27 +1,61 @@
-// src/application/useCases/user/updateUser.ts
+import { UserDtoMapper } from '../../mappers/UserDtoMapper';
+import { Email } from '../../../domain/valueObjects/email';
+import { Password } from '../../../domain/valueObjects/password';
 import { UserRepository } from '../../../domain/repositories/user.repository';
 import { UpdateUserDto, UserResponseDto } from '../../dtos/UserDto';
+import { EventBus } from '../../../domain/events/eventBus';
+import { UserService } from '../../../domain/services/userService';
+import { UserUpdatedEvent } from '../../../domain/events/userEvents';
+import { UserNotFoundError, UserUpdatingError } from '../../errors/userAppErrors';
+import { DomainError } from '../../../domain/errors/domainError';
+import { AppError } from '../../errors/appError';
+import { Logger } from '../../../domain/ports/logger';
 
 export class UpdateUserUseCase {
-  private userRepository: UserRepository;
+  constructor(
+    private userRepository: UserRepository,
+    private userService: UserService,
+    private eventBus: EventBus,
+    private logger: Logger,
+  ) {}
 
-  constructor(userRepository: UserRepository) {
-    this.userRepository = userRepository;
-  }
+  async execute(id: string, userData: UpdateUserDto): Promise<UserResponseDto> {
+    try {
+      // 1. Get user
+      const existingUser = await this.userRepository.findById(id);
+      if (!existingUser) {
+        throw new UserNotFoundError(id);
+      }
 
-  async execute(id: string, userData: UpdateUserDto): Promise<UserResponseDto | null> {
-    const updatedUser = await this.userRepository.update(id, userData);
+      // 2. Apply domain changes
+      if (userData.name !== undefined) {
+        existingUser.updateName(userData.name);
+      }
 
-    if (!updatedUser) {
-      return null;
+      if (userData.email !== undefined && userData.email !== existingUser.email.toString()) {
+        await this.userService.validateUniqueEmail(userData.email);
+        existingUser.updateEmail(new Email(userData.email));
+      }
+
+      if (userData.password !== undefined) {
+        existingUser.updatePassword(Password.create(userData.password));
+      }
+
+      // 3. Save changes
+      const updatedUser = await this.userRepository.update(id, existingUser);
+      if (!updatedUser) {
+        throw new UserNotFoundError(id);
+      }
+      // Publish create user
+      await this.eventBus.publish(new UserUpdatedEvent(updatedUser));
+
+      this.logger.info(`User ${id} updated successfully`);
+      return UserDtoMapper.toResponseDto(updatedUser);
+    } catch (error: any) {
+      if (error instanceof DomainError || error instanceof AppError) {
+        throw error;
+      }
+      throw new UserUpdatingError(`Failed to update user: ${error.message}`);
     }
-
-    return {
-      id: updatedUser.id!,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      createdAt: updatedUser.createdAt!,
-      updatedAt: updatedUser.updatedAt!,
-    };
   }
 }

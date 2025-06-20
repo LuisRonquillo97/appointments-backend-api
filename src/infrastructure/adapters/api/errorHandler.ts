@@ -1,4 +1,3 @@
-// src/infrastructure/adapters/api/errorHandler.ts
 import { Request, Response, NextFunction } from 'express';
 import { DomainError } from '../../../domain/errors/domainError';
 import {

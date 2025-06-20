@@ -1,7 +1,10 @@
-// src/application/useCases/user/listUsers.ts
+import { UserDtoMapper } from '../../mappers/UserDtoMapper';
 import { UserRepository } from '../../../domain/repositories/user.repository';
 import { PaginationOptions, PaginatedResult } from '../../../domain/types/pagination';
 import { UserResponseDto } from '../../dtos/UserDto';
+import { UserFetchError } from '../../errors/userAppErrors';
+import { DomainError } from '../../../domain/errors/domainError';
+import { AppError } from '../../errors/appError';
 
 export class ListUsersUseCase {
   private userRepository: UserRepository;
@@ -11,19 +14,18 @@ export class ListUsersUseCase {
   }
 
   async execute(options?: PaginationOptions): Promise<PaginatedResult<UserResponseDto>> {
-    const result = await this.userRepository.findAll(options);
-
-    const userDtos = result.data.map((user) => ({
-      id: user.id!,
-      name: user.name,
-      email: user.email,
-      createdAt: user.createdAt!,
-      updatedAt: user.updatedAt!,
-    }));
-
-    return {
-      data: userDtos,
-      meta: result.meta,
-    };
+    try {
+      const result = await this.userRepository.findAll(options);
+      const userDtos = result.records.map((user) => UserDtoMapper.toResponseDto(user));
+      return {
+        records: userDtos,
+        meta: result.meta,
+      };
+    } catch (error: any) {
+      if (error instanceof DomainError || error instanceof AppError) {
+        throw error;
+      }
+      throw new UserFetchError(`Failed to fetch users: ${error.message}`);
+    }
   }
 }

@@ -1,18 +1,16 @@
-// src/infrastructure/database/dataSource.ts
+// src/infrastructure/database/datasource.ts
 import { DataSource } from 'typeorm';
-import { UserEntity } from '../../infrastructure/entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
+import { EventEntity } from '../entities/event.entity';
 import config from '../../config';
 
+const { options } = config.database;
+
 export const AppDataSource = new DataSource({
-  type: config.database.type as 'mysql' | 'mariadb' | 'postgres' | 'sqlite' | 'mssql',
-  host: config.database.host,
-  port: config.database.port,
-  username: config.database.username,
-  password: config.database.password,
-  database: config.database.name,
-  synchronize: config.database.synchronize,
-  logging: config.database.logging,
-  entities: [UserEntity],
-  subscribers: [],
-  migrations: [],
+  ...options,
+  synchronize: false, // Desactivar sincronización automática
+  entities: [UserEntity, EventEntity],
+  migrations: [__dirname + '/migrations/**/*.{js,ts}'],
+  migrationsRun: true, // Ejecutar migraciones automáticamente
+  migrationsTableName: 'migrations', // Nombre de la tabla de migraciones
 });

@@ -1,0 +1,7 @@
+{
+    "code": "OK-200-GETUSER",
+    "message": "User found successfully",
+    "success": true,
+    "errors": [],
+    "data": {}
+}

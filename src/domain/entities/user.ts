@@ -1,4 +1,3 @@
-// src/domain/entities/user.ts
 import { InvalidUserDataError } from '../errors/userErrors';
 import { Email } from '../valueObjects/email';
 import { Password } from '../valueObjects/password';
@@ -8,6 +7,7 @@ export class User {
   name: string;
   email: Email;
   password?: Password;
+  isActive: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 
@@ -16,6 +16,7 @@ export class User {
     name: string;
     email: Email;
     password?: Password;
+    isActive?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
   }) {
@@ -23,6 +24,7 @@ export class User {
     this.name = props.name;
     this.email = props.email;
     this.password = props.password;
+    this.isActive = props.isActive !== undefined ? props.isActive : true;
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
 
@@ -48,10 +50,25 @@ export class User {
     this.updatedAt = new Date();
   }
 
+  updatePassword(password: Password): void {
+    this.password = password;
+    this.updatedAt = new Date();
+  }
+
   verifyPassword(plainPassword: string): boolean {
     if (!this.password) {
       return false;
     }
     return this.password.verify(plainPassword);
+  }
+
+  deactivate(): void {
+    this.isActive = false;
+    this.updatedAt = new Date();
+  }
+
+  activate(): void {
+    this.isActive = true;
+    this.updatedAt = new Date();
   }
 }

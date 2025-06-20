@@ -1,13 +1,14 @@
-import { Router, Request, Response } from 'express';
-import userRoutes from './user.routes';
+// src/infrastructure/http/routes/index.ts
+import { Router } from 'express';
+import { Container } from '../../di/container';
+import { createUserRoutes } from './user.routes';
 
-const router = Router();
-// In your routes/index.ts
+export const createRoutes = (container: Container): Router => {
+  const router = Router();
 
-router.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'ok' });
-});
+  // Registrar rutas con el contenedor proporcionado
+  router.use('/users', createUserRoutes(container));
+  // Otras rutas...
 
-router.use('/users', userRoutes);
-
-export default router;
+  return router;
+};

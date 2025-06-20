@@ -1,4 +1,3 @@
-// src/infrastructure/http/middlewares/validator.ts
 import { Request, Response, NextFunction } from 'express';
 import { validationResult, ValidationChain } from 'express-validator';
 import { AppError } from '../../../application/errors/appError';
@@ -12,7 +11,10 @@ export const validate = (validations: ValidationChain[]) => {
       return next();
     }
 
-    const extractedErrors = errors.array().map((err: { msg: any; }) => err.msg);
-    throw new AppError(extractedErrors.join(', '), 400);
+    // Extraer los mensajes de error como array
+    const extractedErrors = errors.array().map((err: any) => err.msg);
+
+    // Pasar el array completo de errores
+    return next(new AppError(extractedErrors, 400));
   };
 };

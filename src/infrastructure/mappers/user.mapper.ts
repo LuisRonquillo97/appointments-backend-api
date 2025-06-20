@@ -1,27 +1,33 @@
-// src/infrastructure/mappers/user.mapper.ts
 import { User } from '../../domain/entities/user';
+import { Email } from '../../domain/valueObjects/email';
+import { Password } from '../../domain/valueObjects/password';
 import { UserEntity } from '../entities/user.entity';
 
 export class UserMapper {
   static toDomain(entity: UserEntity): User {
-    return {
+    return new User({
       id: entity.id,
       name: entity.name,
-      email: entity.email,
-      password: entity.password,
-      salt: entity.salt,
+      email: new Email(entity.email),
+      password: entity.password ? Password.fromHash(entity.password, entity.salt) : undefined,
+      isActive: entity.isActive,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-    };
+    });
   }
 
   static toEntity(domain: User): UserEntity {
     const entity = new UserEntity();
-    entity.id = domain.id || '';
+    if (domain.id) {
+      entity.id = domain.id;
+    }
     entity.name = domain.name;
-    entity.email = domain.email;
-    if (domain.password) entity.password = domain.password;
-    if (domain.salt) entity.salt = domain.salt;
+    entity.email = domain.email.toString();
+    if (domain.password) {
+      entity.password = domain.password.getHashedValue();
+      entity.salt = domain.password.getSalt();
+    }
+    entity.isActive = domain.isActive;
     entity.createdAt = domain.createdAt || new Date();
     entity.updatedAt = domain.updatedAt || new Date();
     return entity;

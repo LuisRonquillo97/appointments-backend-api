@@ -15,14 +15,16 @@ const startServer = async () => {
     console.log('Database connected');
 
     // Initialize dependency injection container
-    Container.initialize(AppDataSource);
+    const container = Container.initialize(AppDataSource);
 
     // Seed the database with initial data
     await seedDatabase(AppDataSource);
 
-    const app = createServer();
-    app.listen(config.port, () => {
-      console.log(`Server running on port ${config.port}`);
+    // Create Express app with the initialized container
+    const app = createServer(container);
+
+    app.listen(config.server.port, () => {
+      console.log(`Server running on port ${config.server.port}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
