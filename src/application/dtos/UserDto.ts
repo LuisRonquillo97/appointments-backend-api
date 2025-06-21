@@ -1,14 +1,24 @@
+/**
+ * Dto request to create a user.
+ */
 export interface CreateUserDto {
   name: string;
   email: string;
   password: string;
 }
 
+/**
+ * Dto request to update a user.
+ */
 export interface UpdateUserDto {
   name?: string;
   email?: string;
   password?: string;
 }
+
+/**
+ * Dto response from user.
+ */
 
 export interface UserResponseDto {
   id: string;

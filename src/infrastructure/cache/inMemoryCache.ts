@@ -1,10 +1,17 @@
 import { CacheService } from './cacheService';
 
+/**
+ * Cache item.
+ */
 interface CacheItem<T> {
   value: T;
   expiry?: number;
 }
 
+/**
+ * In-memory cache service.
+ * Implements CacheService
+ */
 export class InMemoryCache implements CacheService {
   private cache: Map<string, CacheItem<any>> = new Map();
 

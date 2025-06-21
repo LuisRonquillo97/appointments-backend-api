@@ -11,7 +11,17 @@ import { DomainError } from '../../../domain/errors/domainError';
 import { AppError } from '../../errors/appError';
 import { Logger } from '../../../domain/ports/logger';
 
+/**
+ * Update user Use Case.
+ */
 export class UpdateUserUseCase {
+  /**
+   * Constructor.
+   * @param userRepository User repository.
+   * @param userService User service.
+   * @param eventBus Event bus for events.
+   * @param logger Logger.
+   */
   constructor(
     private userRepository: UserRepository,
     private userService: UserService,
@@ -19,6 +29,14 @@ export class UpdateUserUseCase {
     private logger: Logger,
   ) {}
 
+  /**
+   * Updates the provided User ID.
+   * @param id User ID to search
+   * @param userData Data to be updated.
+   * @returns User updated.
+   * @throws UserNotFoundError if the user was not found.
+   * @throws UserUpdatingError if the user could not be updated.
+   */
   async execute(id: string, userData: UpdateUserDto): Promise<UserResponseDto> {
     try {
       // 1. Get user
@@ -46,7 +64,7 @@ export class UpdateUserUseCase {
       if (!updatedUser) {
         throw new UserNotFoundError(id);
       }
-      // Publish create user
+      // Publish update user
       await this.eventBus.publish(new UserUpdatedEvent(updatedUser));
 
       this.logger.info(`User ${id} updated successfully`);

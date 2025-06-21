@@ -1,5 +1,9 @@
 import { AppDataSource } from './datasource';
 
+/**
+ * Initilice database execution.
+ * @returns
+ */
 export const initializeDatabase = async () => {
   try {
     await AppDataSource.initialize();

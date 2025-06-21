@@ -5,13 +5,31 @@ import { UserDeletionError, UserNotFoundError } from '../../errors/userAppErrors
 import { DomainError } from '../../../domain/errors/domainError';
 import { AppError } from '../../errors/appError';
 import { Logger } from '../../../domain/ports/logger';
+
+/**
+ * Delete user Use Case.
+ */
 export class DeleteUserUseCase {
+  /**
+   * Contructor.
+   * @param userRepository User Repository.
+   * @param eventBus Event bus for events.
+   * @param logger Logger.
+   */
   constructor(
     private userRepository: UserRepository,
     private eventBus: EventBus,
     private logger: Logger,
   ) {}
 
+  /**
+   * Executes the use case.
+   * @param id User id.
+   * @param softDelete Soft delete flag.
+   * @returns True if the user was deleted, false otherwise.
+   * @throws UserNotFoundError if the user was not found.
+   * @throws UserDeletionError if the user could not be deleted.
+   */
   async execute(id: string, softDelete: boolean = true): Promise<boolean> {
     try {
       const result = await this.userRepository.delete(id, softDelete);

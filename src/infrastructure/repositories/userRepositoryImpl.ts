@@ -7,6 +7,10 @@ import { UserMapper } from '../mappers/user.mapper';
 import { UserAlreadyDeletedError } from '../../domain/errors/userErrors';
 import { UserNotFoundError } from '../../application/errors/userAppErrors';
 
+/**
+ * User repository implementation.
+ * @implements UseRepository.
+ */
 export class UserRepositoryImpl implements UserRepository {
   private repository: Repository<UserEntity>;
 

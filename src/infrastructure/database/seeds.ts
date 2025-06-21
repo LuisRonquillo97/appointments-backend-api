@@ -1,6 +1,10 @@
 import { DataSource } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 
+/**
+ * Seeds a default user.
+ * @param dataSource
+ */
 export async function seedDatabase(dataSource: DataSource): Promise<void> {
   const userRepository = dataSource.getRepository(UserEntity);
 
@@ -14,7 +18,7 @@ export async function seedDatabase(dataSource: DataSource): Promise<void> {
     const defaultUser = userRepository.create({
       name: 'Admin User',
       email: 'admin@example.com',
-      password: 'admin123', // Esta contraseña será encriptada automáticamente por el hook @BeforeInsert
+      password: 'admin123',
     });
 
     await userRepository.save(defaultUser);

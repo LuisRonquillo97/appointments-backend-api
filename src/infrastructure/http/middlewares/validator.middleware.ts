@@ -2,6 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult, ValidationChain } from 'express-validator';
 import { AppError } from '../../../application/errors/appError';
 
+/**
+ * Validation middleware.
+ * @param validations Array of validation chains.
+ * @returns Validation result.
+ * @throws AppError if validation fails.
+ */
 export const validate = (validations: ValidationChain[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     await Promise.all(validations.map((validation) => validation.run(req)));

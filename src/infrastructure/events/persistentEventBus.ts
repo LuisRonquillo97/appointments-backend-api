@@ -2,11 +2,19 @@ import { DomainEvent } from '../../domain/events/domainEvent';
 import { EventBus, EventHandler } from '../../domain/events/eventBus';
 import { EventStore } from '../../domain/repositories/eventStore';
 
+/**
+ * Persistent event bus implementation. Also implements EventBus.
+ */
 export class PersistentEventBus implements EventBus {
   private handlers: Map<string, EventHandler<any>[]> = new Map();
 
   constructor(private eventStore: EventStore) {}
 
+  /**
+   * Publish an event.
+   * @param event Event to publish.
+   * @returns Promise<void>
+   */
   async publish<T extends DomainEvent>(event: T): Promise<void> {
     // Guardar el evento en el almacén
     await this.eventStore.saveEvent(event);
@@ -19,6 +27,11 @@ export class PersistentEventBus implements EventBus {
     }
   }
 
+  /**
+   * Subscribes to an specific event.
+   * @param eventName Event to subscribe.
+   * @param handler Handler to do on event received.
+   */
   subscribe<T extends DomainEvent>(eventName: string, handler: EventHandler<T>): void {
     const handlers = this.handlers.get(eventName) || [];
     handlers.push(handler);

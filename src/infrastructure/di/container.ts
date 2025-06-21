@@ -18,10 +18,23 @@ import {
 import { LoggerFactory } from '../logging/loggerFactory';
 import { Logger } from '../../domain/ports/logger';
 
+/**
+ * Dependency injection container.
+ */
 export class Container {
+  /**
+   * Container instance.
+   */
   private static instance: Container;
+  /**
+   * Mapped services.
+   */
   private services: Map<string, any> = new Map();
 
+  /**
+   * Constructor
+   * @param dataSource Database entity.
+   */
   private constructor(dataSource: DataSource) {
     // Agregar al inicio del constructor
     this.services.set('Logger', LoggerFactory.getLogger('AppRoot'));
@@ -95,6 +108,11 @@ export class Container {
     eventBus.subscribe('user.deleted', logUserDeletedHandler);
   }
 
+  /**
+   * Initialize container.
+   * @param dataSource Database entity.
+   * @returns Container instance.
+   */
   static initialize(dataSource: DataSource): Container {
     if (!Container.instance) {
       Container.instance = new Container(dataSource);
@@ -102,6 +120,10 @@ export class Container {
     return Container.instance;
   }
 
+  /**
+   * Get instance of container.
+   * @returns Container instance.
+   */
   static getInstance(): Container {
     if (!Container.instance) {
       throw new Error('Container not initialized. Call initialize first.');
@@ -109,6 +131,11 @@ export class Container {
     return Container.instance;
   }
 
+  /**
+   * Get service from container.
+   * @param serviceName Service name.
+   * @returns Service instance.
+   */
   get<T>(serviceName: string): T {
     if (!this.services.has(serviceName)) {
       throw new Error(`Service ${serviceName} not found in container`);

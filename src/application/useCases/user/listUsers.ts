@@ -6,13 +6,29 @@ import { UserFetchError } from '../../errors/userAppErrors';
 import { DomainError } from '../../../domain/errors/domainError';
 import { AppError } from '../../errors/appError';
 
+/**
+ * List users Use Case.
+ */
 export class ListUsersUseCase {
+  /**
+   * User repsitory.
+   */
   private userRepository: UserRepository;
 
+  /**
+   * constructor.
+   * @param userRepository User repository.
+   */
   constructor(userRepository: UserRepository) {
     this.userRepository = userRepository;
   }
 
+  /**
+   * Gets a paginated list of active users.
+   * @param options Pagination options
+   * @returns Paginated list of active users.
+   * @throws UserFetchError if the users could not be fetched.
+   */
   async execute(options?: PaginationOptions): Promise<PaginatedResult<UserResponseDto>> {
     try {
       const result = await this.userRepository.findAll(options);

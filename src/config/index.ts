@@ -3,6 +3,9 @@ import { DataSourceOptions } from 'typeorm';
 
 dotenv.config();
 
+/**
+ * Configurations interface.
+ */
 interface Config {
   server: {
     port: number;
@@ -17,9 +20,14 @@ interface Config {
   };
 }
 
-// Definir el tipo de base de datos de manera segura
+/**
+ * Supported database types for TypeORM.
+ */
 type SupportedDBType = 'mysql' | 'mariadb' | 'postgres' | 'sqlite' | 'mssql';
 
+/**
+ * Config object with environment variables.
+ */
 const config: Config = {
   server: {
     port: parseInt(process.env.PORT || '3000', 10),

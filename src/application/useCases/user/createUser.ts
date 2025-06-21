@@ -12,14 +12,30 @@ import { AppError } from '../../errors/appError';
 import { UserCreationError } from '../../errors/userAppErrors';
 import { Logger } from '../../../domain/ports/logger';
 
+/**
+ * Use case for creating a new user.
+ */
 export class CreateUserUseCase {
+  /**
+   * Constructor for the CreateUserUseCase class.
+   * @param userRepository User repository.
+   * @param userService User service.
+   * @param eventBus Event bus for events.
+   * @param logger Logger.
+   */
   constructor(
     private userRepository: UserRepository,
     private userService: UserService,
     private eventBus: EventBus,
     private logger: Logger,
   ) {}
-
+  /**
+   * Runs the create use case.
+   * @param userData User data.
+   * @returns UserResponseDto
+   * @throws UserCreationError if user creation fails.
+   * @throws EmailAlreadyExistsError if the provided email is already in use.
+   */
   async execute(userData: CreateUserDto): Promise<UserResponseDto> {
     try {
       await this.userService.validateUniqueEmail(userData.email);

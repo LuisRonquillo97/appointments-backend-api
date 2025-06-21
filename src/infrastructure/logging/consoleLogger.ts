@@ -1,5 +1,9 @@
 import { Logger } from '../../domain/ports/logger';
 
+/**
+ * Console logger class.
+ * @implements Logger
+ */
 export class ConsoleLogger implements Logger {
   debug(message: string, meta?: Record<string, any>): void {
     console.debug(`[DEBUG] ${message}`, meta || '');

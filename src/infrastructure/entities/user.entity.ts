@@ -9,6 +9,9 @@ import {
 } from 'typeorm';
 import * as crypto from 'crypto';
 
+/**
+ * User entity from typeORM
+ */
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -35,6 +38,10 @@ export class UserEntity {
   @UpdateDateColumn()
   updatedAt!: Date;
 
+  /**
+   * If the user has a password, hashes it.
+   * Runs before every insert and update.
+   */
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
@@ -51,6 +58,11 @@ export class UserEntity {
     }
   }
 
+  /**
+   * Validates if the password is correct.
+   * @param password Password to validate.
+   * @returns True if the password is correct.
+   */
   validatePassword(password: string): boolean {
     const hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
     return this.password === hash;

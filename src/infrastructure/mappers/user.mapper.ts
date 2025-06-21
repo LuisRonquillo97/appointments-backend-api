@@ -3,7 +3,15 @@ import { Email } from '../../domain/valueObjects/email';
 import { Password } from '../../domain/valueObjects/password';
 import { UserEntity } from '../entities/user.entity';
 
+/**
+ * User infrastructure mapper.
+ */
 export class UserMapper {
+  /**
+   * Transform an user entity to a domain user.
+   * @param entity
+   * @returns
+   */
   static toDomain(entity: UserEntity): User {
     return new User({
       id: entity.id,
@@ -16,6 +24,11 @@ export class UserMapper {
     });
   }
 
+  /**
+   * Transform a domain user to an user entity.
+   * @param domain
+   * @returns
+   */
   static toEntity(domain: User): UserEntity {
     const entity = new UserEntity();
     if (domain.id) {

@@ -1,9 +1,15 @@
+/**
+ * Response code interface.
+ */
 export interface ResponseCode {
   code: string;
   message: string;
   success: boolean;
 }
 
+/**
+ * Response codes.
+ */
 export const ResponseCodes: { [key: string]: ResponseCode } = {
   // Códigos de éxito (2xx)
   OK_200_GETUSER: { code: 'OK-200-GETUSER', message: 'User found successfully', success: true },

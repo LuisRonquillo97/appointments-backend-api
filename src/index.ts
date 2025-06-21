@@ -9,6 +9,9 @@ import config from './config';
 
 dotenv.config();
 
+/**
+ * Start the server.
+ */
 const startServer = async () => {
   try {
     await AppDataSource.initialize();

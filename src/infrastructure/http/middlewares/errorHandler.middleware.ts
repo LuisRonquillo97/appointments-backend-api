@@ -1,10 +1,17 @@
-// src/infrastructure/http/middlewares/errorHandler.middleware.ts
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../../../application/errors/appError';
 import { DomainError } from '../../../domain/errors/domainError';
 import { EmailAlreadyExistsError } from '../../../domain/errors/userErrors';
 import { ApiResponseFormatter } from '../utils/apiResponse';
 
+/**
+ * Error handler middleware.
+ * @param err Error to handle.
+ * @param req Request.
+ * @param res Response.
+ * @param next Next Fuction.
+ * @returns Trhows error.
+ */
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
 

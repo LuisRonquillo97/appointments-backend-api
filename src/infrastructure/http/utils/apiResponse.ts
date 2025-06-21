@@ -1,6 +1,10 @@
 import { Response } from 'express';
-import { ResponseCode, ResponseCodes } from '../constants/responseCodes';
+import { ResponseCodes } from '../constants/responseCodes';
 
+/**
+ * ApiResponse interface.
+ * @param T Data type.
+ */
 export interface ApiResponse<T> {
   code: string;
   message: string;
@@ -9,7 +13,18 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+/**
+ * ApiResponseFormatter class.
+ */
 export class ApiResponseFormatter {
+  /**
+   * Format response.
+   * @param res Response object.
+   * @param responseCode Response code.
+   * @param data Data to return.
+   * @param errors Errors to return.
+   * @returns Formatted response.
+   */
   static format<T>(
     res: Response,
     responseCode: keyof typeof ResponseCodes,

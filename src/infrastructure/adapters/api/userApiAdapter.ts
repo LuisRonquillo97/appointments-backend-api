@@ -7,7 +7,18 @@ import { DeleteUserUseCase } from '../../../application/useCases/user/deleteUser
 import { CreateUserDto, UpdateUserDto } from '../../../application/dtos/UserDto';
 import { ApiResponseFormatter } from '../../http/utils/apiResponse';
 
+/**
+ * User Api adapter.
+ */
 export class UserApiAdapter {
+  /**
+   * Constructor with all user use cases.
+   * @param createUserUseCase Create use case.
+   * @param getUserUseCase Get use case.
+   * @param listUsersUseCase List use case.
+   * @param updateUserUseCase Update use case.
+   * @param deleteUserUseCase Delete use case.
+   */
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
@@ -16,6 +27,13 @@ export class UserApiAdapter {
     private readonly deleteUserUseCase: DeleteUserUseCase,
   ) {}
 
+  /**
+   * Get all users.
+   * @param req Request
+   * @param res Response
+   * @param next Next function.
+   * @returns All users, paginated.
+   */
   getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
@@ -28,6 +46,13 @@ export class UserApiAdapter {
     }
   };
 
+  /**
+   * Get user by id.
+   * @param req Request
+   * @param res Response
+   * @param next Next function.
+   * @returns User.
+   */
   getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -43,6 +68,13 @@ export class UserApiAdapter {
     }
   };
 
+  /**
+   * Create user.
+   * @param req Request
+   * @param res Response
+   * @param next Next function.
+   * @returns Created user.
+   */
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: CreateUserDto = req.body;
@@ -54,6 +86,13 @@ export class UserApiAdapter {
     }
   };
 
+  /**
+   * Update user.
+   * @param req Request
+   * @param res Response
+   * @param next Next function.
+   * @returns Updated user.
+   */
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -71,6 +110,13 @@ export class UserApiAdapter {
     }
   };
 
+  /**
+   * Delete user.
+   * @param req Request
+   * @param res Response
+   * @param next Next function.
+   * @returns Deleted user.
+   */
   deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

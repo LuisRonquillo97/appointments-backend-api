@@ -1,10 +1,14 @@
-// src/infrastructure/http/server.ts
 import express from 'express';
 import cors from 'cors';
 import { createRoutes } from './routes';
 import { errorHandler } from './middlewares/errorHandler.middleware';
 import { Container } from '../di/container';
 
+/**
+ * Method to create a server.
+ * @param container Container instance.
+ * @returns Express app.
+ */
 export const createServer = (container: Container) => {
   const app = express();
 

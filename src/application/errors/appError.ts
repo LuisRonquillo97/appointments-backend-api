@@ -1,3 +1,6 @@
+/**
+ * Errors providing from application layer.
+ */
 export class AppError extends Error {
   public readonly statusCode: number;
   public readonly errors: string[];

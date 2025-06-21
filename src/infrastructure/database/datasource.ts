@@ -1,11 +1,12 @@
-// src/infrastructure/database/datasource.ts
 import { DataSource } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { EventEntity } from '../entities/event.entity';
 import config from '../../config';
-
 const { options } = config.database;
 
+/**
+ * App datasource.
+ */
 export const AppDataSource = new DataSource({
   ...options,
   synchronize: false, // Desactivar sincronización automática

@@ -3,6 +3,9 @@ import { DomainEvent } from '../../domain/events/domainEvent';
 import { EventStore } from '../../domain/repositories/eventStore';
 import { EventEntity } from '../entities/event.entity';
 
+/**
+ * Event store implementation. Also implements EventStore.
+ */
 export class EventStoreImpl implements EventStore {
   private repository: Repository<EventEntity>;
 
@@ -10,6 +13,11 @@ export class EventStoreImpl implements EventStore {
     this.repository = dataSource.getRepository(EventEntity);
   }
 
+  /**
+   * Saves an event.
+   * @param event Event to save.
+   * @throws Error if event is null or undefined.
+   */
   async saveEvent<T extends DomainEvent>(event: T): Promise<void> {
     if (!event) {
       throw new Error('Event cannot be null or undefined');
@@ -51,6 +59,11 @@ export class EventStoreImpl implements EventStore {
     }
   }
 
+  /**
+   * Get events from BD.
+   * @param aggregateId Aggregate id.
+   * @returns List of events.
+   */
   async getEvents(aggregateId?: string): Promise<DomainEvent[]> {
     try {
       const query = this.repository.createQueryBuilder('event').orderBy('event.occurredOn', 'ASC');
