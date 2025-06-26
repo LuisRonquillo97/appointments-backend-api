@@ -44,7 +44,7 @@ export class CreateUserUseCase {
       const password = Password.create(userData.password);
 
       const user = new User({
-        name: userData.name,
+        name: userData.name.trim(),
         email: email,
         password: password,
         createdAt: new Date(),
@@ -52,15 +52,23 @@ export class CreateUserUseCase {
       });
 
       const createdUser = await this.userRepository.create(user);
-      await this.eventBus.publish(new UserCreatedEvent(createdUser));
+      try {
+        await this.eventBus.publish(new UserCreatedEvent(createdUser));
+      } catch (error: any) {
+        const message = `Failed to publish on Event bus - Create user: ${error.message}`;
+        this.logger.error(message);
+      }
 
       this.logger.info(`User ${createdUser.id} created successfully`);
       return UserDtoMapper.toResponseDto(createdUser);
     } catch (error: any) {
+      const message = `Failed to create user: ${error.message}`;
+      this.logger.error(message);
       if (error instanceof DomainError || error instanceof AppError) {
         throw error;
       }
-      throw new UserCreationError(`Failed to create user: ${error.message}`);
+
+      throw new UserCreationError(message);
     }
   }
 }
