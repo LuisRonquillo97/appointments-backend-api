@@ -1,8 +1,6 @@
-# new one
+# Appointments express API with Hexagonal Architecture
 
-# Express API with Hexagonal Architecture
-
-A modern Express.js API template using TypeScript and Hexagonal Architecture (Ports and Adapters).
+A modern Express.js API using TypeScript and Hexagonal Architecture (Ports and Adapters).
 
 ## Features
 
@@ -17,7 +15,7 @@ A modern Express.js API template using TypeScript and Hexagonal Architecture (Po
 
 ## Architecture Overview
 
-This template follows the Hexagonal Architecture pattern (also known as Ports and Adapters):
+This API follows the Hexagonal Architecture pattern (also known as Ports and Adapters):
 
 ```bash
 src/
@@ -59,70 +57,6 @@ All API responses follow a standard format:
   "errors": [],
   "data": {}
 }
-```
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v14+)
-- PostgreSQL or another database supported by TypeORM
-- AWS CLI (for deployment)
-
-### Installation
-
-1. Install dependencies:
-
-```bash
-npm install
-```
-
-2. Configure environment:
-
-```bash
-cp .env.example .env
-# Edit .env with your values
-```
-
-3. Start development server:
-
-```bash
-npm run dev
-```
-
-# old one
-
-# Express API with Hexagonal Architecture
-
-A modern Express.js API template using TypeScript and Hexagonal Architecture (Ports and Adapters).
-
-## Features
-
-- 🏗️ **Hexagonal Architecture** - Clear separation of concerns
-- 🔄 **TypeScript** - Type safety and modern JavaScript features
-- 🗄️ **TypeORM** - SQL database with ORM
-- 🔒 **Input Validation** - Request validation using express-validator
-- 🚦 **Error Handling** - Centralized error handling
-- 🧪 **Testing Ready** - Structure for unit and integration tests
-- ☁️ **AWS Ready** - Deployable to AWS Lambda with API Gateway
-
-## Architecture Overview
-
-This template follows the Hexagonal Architecture pattern (also known as Ports and Adapters):
-
-```bash
-src/
-├── domain/ # Business entities and interfaces
-│ ├── entities/ # Core business models
-│ └── repositories/ # Repository interfaces
-├── application/ # Use cases and services
-│ ├── dtos/ # Data Transfer Objects
-│ ├── useCases/ # Business operations
-│ └── errors/ # Application errors
-└── infrastructure/ # External adapters
-├── http/ # Express configuration
-├── database/ # Database setup
-└── repositories/# Repository implementations
 ```
 
 ## Getting Started
