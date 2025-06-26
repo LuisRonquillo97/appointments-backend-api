@@ -10,6 +10,11 @@ interface Config {
   server: {
     port: number;
     nodeEnv: string;
+    rateLimiterTimeMinutes: number;
+    rateLimiterMaxRequests: number;
+    allowedOrigins: string;
+    bodyLimit: string;
+    logFormat: string;
   };
   database: {
     options: DataSourceOptions;
@@ -32,6 +37,11 @@ const config: Config = {
   server: {
     port: parseInt(process.env.PORT || '3000', 10),
     nodeEnv: process.env.NODE_ENV || 'development',
+    rateLimiterTimeMinutes: parseInt(process.env.RATE_LIMITER_MINUTES || '15'),
+    rateLimiterMaxRequests: parseInt(process.env.RATE_LIMITER_MAX_REQUESTS || '15'),
+    allowedOrigins: process.env.ALLOWED_ORIGINS || 'http://localhost:3000',
+    bodyLimit: process.env.BODY_LIMIT || '10mb',
+    logFormat: process.env.MORGAN_LOG_FORMAT || 'combined',
   },
   database: {
     options: {

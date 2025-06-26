@@ -1,4 +1,3 @@
-// src/index.ts
 import 'reflect-metadata';
 import dotenv from 'dotenv';
 import { createServer } from './infrastructure/http/server';

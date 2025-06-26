@@ -12,19 +12,19 @@ export interface ResponseCode {
  */
 export const ResponseCodes: { [key: string]: ResponseCode } = {
   // Códigos de éxito (2xx)
-  OK_200_GETUSER: { code: 'OK-200-GETUSER', message: 'User found successfully', success: true },
+  OK_200_GETUSER: { code: 'OK_200_GETUSER', message: 'User found successfully', success: true },
   OK_200_LISTUSERS: {
-    code: 'OK-200-LISTUSERS',
+    code: 'OK_200_LISTUSERS',
     message: 'Users retrieved successfully',
     success: true,
   },
   OK_201_CREATEUSER: {
-    code: 'OK-201-CREATEUSER',
+    code: 'OK_201_CREATEUSER',
     message: 'User created successfully',
     success: true,
   },
   OK_200_UPDATEUSER: {
-    code: 'OK-200-UPDATEUSER',
+    code: 'OK_200_UPDATEUSER',
     message: 'User updated successfully',
     success: true,
   },
@@ -35,23 +35,33 @@ export const ResponseCodes: { [key: string]: ResponseCode } = {
   },
 
   // Códigos de error (4xx)
-  ERROR_400_BADREQUEST: { code: 'ERROR-400-BADREQUEST', message: 'Bad request', success: false },
+  ERROR_400_BADREQUEST: { code: 'ERROR_400_BADREQUEST', message: 'Bad request', success: false },
   ERROR_401_UNAUTHORIZED: {
-    code: 'ERROR-401-UNAUTHORIZED',
+    code: 'ERROR_401_UNAUTHORIZED',
     message: 'Unauthorized',
     success: false,
   },
-  ERROR_403_FORBIDDEN: { code: 'ERROR-403-FORBIDDEN', message: 'Forbidden', success: false },
-  ERROR_404_NOTFOUND: { code: 'ERROR-404-NOTFOUND', message: 'Resource not found', success: false },
+  ERROR_403_FORBIDDEN: { code: 'ERROR_403_FORBIDDEN', message: 'Forbidden', success: false },
+  ERROR_404_NOTFOUND: { code: 'ERROR_404_NOTFOUND', message: 'Resource not found', success: false },
+  ERROR_408_TIMEOUT: {
+    code: 'ERROR_408_TIMEOUT',
+    message: 'Request timeout',
+    success: false,
+  },
   ERROR_409_CONFLICT: {
-    code: 'ERROR-409-CONFLICT',
+    code: 'ERROR_409_CONFLICT',
     message: 'Resource already exists',
+    success: false,
+  },
+  ERROR_429_RATELIMIT: {
+    code: 'ERROR_429_RATELIMIT',
+    message: 'Too many requests from this IP',
     success: false,
   },
 
   // Códigos de error del servidor (5xx)
   ERROR_500_INTERNAL: {
-    code: 'ERROR-500-INTERNAL',
+    code: 'ERROR_500_INTERNAL',
     message: 'Internal server error',
     success: false,
   },

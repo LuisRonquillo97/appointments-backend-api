@@ -53,7 +53,7 @@ All API responses follow a standard format:
 
 ```Bash
 {
-  "code": "OK-200-GETUSER",
+  "code": "OK_200_GETUSER",
   "message": "User found successfully",
   "success": true,
   "errors": [],
