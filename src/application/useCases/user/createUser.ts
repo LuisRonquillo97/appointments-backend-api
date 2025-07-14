@@ -55,8 +55,7 @@ export class CreateUserUseCase {
       try {
         await this.eventBus.publish(new UserCreatedEvent(createdUser));
       } catch (error: any) {
-        const message = `Failed to publish on Event bus - Create user: ${error.message}`;
-        this.logger.error(message);
+        this.logger.error(`Failed to publish on Event bus - Create user: ${error.message}`);
       }
 
       this.logger.info(`User ${createdUser.id} created successfully`);

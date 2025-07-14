@@ -20,7 +20,6 @@ import {
   mockUserId,
 } from './utils/userTestUtils';
 
-// Mock de los value objects
 jest.mock('../../../../src/domain/valueObjects/email');
 jest.mock('../../../../src/domain/valueObjects/password');
 

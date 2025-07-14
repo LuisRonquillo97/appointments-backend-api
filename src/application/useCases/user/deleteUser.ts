@@ -36,10 +36,16 @@ export class DeleteUserUseCase {
       if (!result) {
         throw new UserNotFoundError(id);
       }
-      await this.eventBus.publish(new UserDeletedEvent(id));
-      this.logger.info(`User ${id} ${softDelete ? 'soft' : 'hard'} deleted successfully`);
+      try {
+        await this.eventBus.publish(new UserDeletedEvent(id));
+        this.logger.info(`User ${id} ${softDelete ? 'soft' : 'hard'} deleted successfully`);
+      } catch (error: any) {
+        this.logger.error(`Failed to publish UserDeletedEvent: ${error.message}`);
+      }
+
       return result;
     } catch (error: any) {
+      this.logger.error(`Failed to delete user: ${error.message}`);
       if (error instanceof DomainError || error instanceof AppError) {
         throw error;
       }
