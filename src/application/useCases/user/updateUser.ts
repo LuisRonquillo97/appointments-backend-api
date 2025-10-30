@@ -56,22 +56,8 @@ export class UpdateUserUseCase {
       }
 
       if (userData.password !== undefined) {
-        console.log('=== UPDATE PASSWORD DEBUG ===');
-        console.log(
-          'Before update - existing password hash:',
-          existingUser.password?.getHashedValue(),
-        );
-        console.log('Before update - existing salt:', existingUser.password?.getSalt());
-
         const newPassword = Password.create(userData.password);
-        console.log('New password hash:', newPassword.getHashedValue());
-        console.log('New password salt:', newPassword.getSalt());
-
         existingUser.updatePassword(newPassword);
-
-        console.log('After update - user password hash:', existingUser.password?.getHashedValue());
-        console.log('After update - user salt:', existingUser.password?.getSalt());
-        console.log('============================');
       }
 
       // 3. Save changes

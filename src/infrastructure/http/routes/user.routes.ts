@@ -8,6 +8,7 @@ import {
   updateUserValidator,
   loginUserValidator,
 } from '../middlewares/validators/user.validator';
+import { authenticateToken } from '../middlewares/auth.middleware';
 
 /**
  * User routes.
@@ -21,12 +22,12 @@ export const createUserRoutes = (container: Container): Router => {
   const userApiAdapter = container.get<UserApiAdapter>('UserApiAdapter');
 
   // User routes
-  router.get('/', userApiAdapter.getAllUsers);
-  router.get('/:id', validate(idValidator), userApiAdapter.getUserById);
-  router.post('/', validate(createUserValidator), userApiAdapter.createUser);
-  router.put('/:id', validate(updateUserValidator), userApiAdapter.updateUser);
-  router.delete('/:id', validate(idValidator), userApiAdapter.deleteUser);
-  router.post('/login', validate(loginUserValidator), userApiAdapter.loginUser);
+  router.get('/', authenticateToken, userApiAdapter.getAllUsers);
+  router.get('/:id', [authenticateToken, validate(idValidator)], userApiAdapter.getUserById);
+  router.post('/', [authenticateToken, validate(createUserValidator)], userApiAdapter.createUser);
+  router.put('/:id', [authenticateToken, validate(updateUserValidator)], userApiAdapter.updateUser);
+  router.delete('/:id', [authenticateToken, validate(idValidator)], userApiAdapter.deleteUser);
+  router.post('/login', [validate(loginUserValidator)], userApiAdapter.loginUser);
 
   return router;
 };
