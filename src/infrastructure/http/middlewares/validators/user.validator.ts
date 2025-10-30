@@ -60,3 +60,5 @@ export const loginUserValidator = [
   body('email').isEmail().withMessage('Must be a valid email'),
   body('password').notEmpty().withMessage('Password is required'),
 ];
+
+export const refreshTokenValidator = [body('token').notEmpty().withMessage('Token is required')];

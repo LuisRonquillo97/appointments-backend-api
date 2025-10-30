@@ -38,6 +38,11 @@ export const ResponseCodes: { [key: string]: ResponseCode } = {
     message: 'User logged in successfully',
     success: true,
   },
+  OK_200_REFRESH: {
+    code: 'OK_200_REFRESH',
+    message: 'Token refreshed successfully',
+    success: true,
+  },
 
   // Códigos de error (4xx)
   ERROR_400_BADREQUEST: { code: 'ERROR_400_BADREQUEST', message: 'Bad request', success: false },

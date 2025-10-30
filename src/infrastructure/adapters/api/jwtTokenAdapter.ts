@@ -18,4 +18,25 @@ export class JwtTokenAdapter implements TokenPort {
       return null;
     }
   }
+
+  refreshToken(token: string): string | null {
+    try {
+      const decoded = jwt.verify(token, this.secretKey, { ignoreExpiration: true }) as any;
+
+      const now = Math.floor(Date.now() / 1000);
+      const maxRefreshTime = 7 * 24 * 60 * 60; // 7 días
+
+      if (now - decoded.exp > maxRefreshTime) {
+        return null;
+      }
+
+      return this.generateToken({
+        id: decoded.id,
+        email: decoded.email,
+        name: decoded.name,
+      });
+    } catch (error) {
+      return null;
+    }
+  }
 }

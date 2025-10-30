@@ -44,3 +44,12 @@ export interface UserLoginResponseDto {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// En UserDto.ts
+export interface RefreshTokenDto {
+  token: string;
+}
+
+export interface RefreshTokenResponseDto {
+  token: string;
+}

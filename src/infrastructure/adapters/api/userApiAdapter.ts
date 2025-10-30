@@ -4,9 +4,16 @@ import { GetUserUseCase } from '../../../application/useCases/user/getUser';
 import { ListUsersUseCase } from '../../../application/useCases/user/listUsers';
 import { UpdateUserUseCase } from '../../../application/useCases/user/updateUser';
 import { DeleteUserUseCase } from '../../../application/useCases/user/deleteUser';
-import { CreateUserDto, UpdateUserDto, UserLoginDto } from '../../../application/dtos/UserDto';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UserLoginDto,
+  RefreshTokenDto,
+} from '../../../application/dtos/UserDto';
 import { ApiResponseFormatter } from '../../http/utils/apiResponse';
 import { LoginUserCase } from '../../../application/useCases/user/loginUser';
+import { Container } from '../../di/container';
+import { TokenPort } from '../../../domain/ports/tokenPort';
 
 /**
  * User Api adapter.
@@ -147,6 +154,33 @@ export class UserApiAdapter {
       const result = await this.loginUserCase.execute(loginData);
 
       return ApiResponseFormatter.format(res, 'OK_200_LOGIN', result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Refresh token.
+   * @param req Request
+   * @param res Response
+   * @param next Next function.
+   * @returns New token.
+   */
+  refreshToken = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { token }: RefreshTokenDto = req.body;
+      const container = Container.getInstance();
+      const tokenPort = container.get<TokenPort>('TokenPort');
+
+      const newToken = tokenPort.refreshToken(token);
+
+      if (!newToken) {
+        return ApiResponseFormatter.format(res, 'ERROR_401_UNAUTHORIZED', {}, [
+          'Invalid or expired refresh token',
+        ]);
+      }
+
+      return ApiResponseFormatter.format(res, 'OK_200_REFRESH', { token: newToken });
     } catch (error) {
       next(error);
     }

@@ -14,4 +14,11 @@ export interface TokenPort {
    * @returns Decoded payload or null if invalid
    */
   verifyToken(token: string): Record<string, any> | null;
+
+  /**
+   * Refreshes an expired or near-expired token.
+   * @param token Token to refresh
+   * @returns New token or null if refresh failed
+   */
+  refreshToken(token: string): string | null;
 }
