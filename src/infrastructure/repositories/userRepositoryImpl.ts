@@ -66,13 +66,11 @@ export class UserRepositoryImpl implements UserRepository {
 
     // Convertir el usuario de dominio a entidad
     const entityToUpdate = UserMapper.toEntity(userData);
-
     // Asegurarse de que el ID sea el correcto
     entityToUpdate.id = id;
 
     // Guardar la entidad actualizada
     const savedEntity = await this.repository.save(entityToUpdate);
-
     return UserMapper.toDomain(savedEntity);
   }
 
@@ -97,7 +95,7 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const entity = await this.repository.findOne({ where: { email: email } });
+    const entity = await this.repository.findOne({ where: { email: email, isActive: true } });
     return entity ? UserMapper.toDomain(entity) : null;
   }
 }

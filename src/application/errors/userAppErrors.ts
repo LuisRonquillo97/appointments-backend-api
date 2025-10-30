@@ -48,3 +48,9 @@ export class UserFetchError extends AppError {
     this.name = 'UserFetchError';
   }
 }
+export class UserLoginError extends AppError {
+  constructor(message: string) {
+    super(message, 401);
+    this.name = 'UserLoginFailed';
+  }
+}

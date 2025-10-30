@@ -6,6 +6,7 @@ import {
   createUserValidator,
   idValidator,
   updateUserValidator,
+  loginUserValidator,
 } from '../middlewares/validators/user.validator';
 
 /**
@@ -25,6 +26,7 @@ export const createUserRoutes = (container: Container): Router => {
   router.post('/', validate(createUserValidator), userApiAdapter.createUser);
   router.put('/:id', validate(updateUserValidator), userApiAdapter.updateUser);
   router.delete('/:id', validate(idValidator), userApiAdapter.deleteUser);
+  router.post('/login', validate(loginUserValidator), userApiAdapter.loginUser);
 
   return router;
 };

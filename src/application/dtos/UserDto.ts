@@ -17,6 +17,14 @@ export interface UpdateUserDto {
 }
 
 /**
+ * Dto request to login user.
+ */
+export interface UserLoginDto {
+  email: string;
+  password: string;
+}
+
+/**
  * Dto response from user.
  */
 
@@ -24,6 +32,15 @@ export interface UserResponseDto {
   id: string;
   name: string;
   email: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface UserLoginResponseDto {
+  id: string;
+  name: string;
+  email: string;
+  token: string;
   createdAt: Date;
   updatedAt: Date;
 }

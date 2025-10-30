@@ -33,6 +33,11 @@ export const ResponseCodes: { [key: string]: ResponseCode } = {
     message: 'User deleted successfully',
     success: true,
   },
+  OK_200_LOGIN: {
+    code: 'OK_200_LOGIN',
+    message: 'User logged in successfully',
+    success: true,
+  },
 
   // Códigos de error (4xx)
   ERROR_400_BADREQUEST: { code: 'ERROR_400_BADREQUEST', message: 'Bad request', success: false },

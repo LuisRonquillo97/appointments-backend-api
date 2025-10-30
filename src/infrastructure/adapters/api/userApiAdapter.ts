@@ -4,8 +4,9 @@ import { GetUserUseCase } from '../../../application/useCases/user/getUser';
 import { ListUsersUseCase } from '../../../application/useCases/user/listUsers';
 import { UpdateUserUseCase } from '../../../application/useCases/user/updateUser';
 import { DeleteUserUseCase } from '../../../application/useCases/user/deleteUser';
-import { CreateUserDto, UpdateUserDto } from '../../../application/dtos/UserDto';
+import { CreateUserDto, UpdateUserDto, UserLoginDto } from '../../../application/dtos/UserDto';
 import { ApiResponseFormatter } from '../../http/utils/apiResponse';
+import { LoginUserCase } from '../../../application/useCases/user/loginUser';
 
 /**
  * User Api adapter.
@@ -25,6 +26,7 @@ export class UserApiAdapter {
     private readonly listUsersUseCase: ListUsersUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly loginUserCase: LoginUserCase,
   ) {}
 
   /**
@@ -127,6 +129,24 @@ export class UserApiAdapter {
       }
 
       return ApiResponseFormatter.format(res, 'OK_200_DELETEUSER', { id });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Login user.
+   * @param req Request
+   * @param res Response
+   * @param next Next function.
+   * @returns Login response with token.
+   */
+  loginUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const loginData: UserLoginDto = req.body;
+      const result = await this.loginUserCase.execute(loginData);
+
+      return ApiResponseFormatter.format(res, 'OK_200_LOGIN', result);
     } catch (error) {
       next(error);
     }

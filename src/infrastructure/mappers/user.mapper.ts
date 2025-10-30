@@ -13,7 +13,7 @@ export class UserMapper {
    * @returns
    */
   static toDomain(entity: UserEntity): User {
-    return new User({
+    const user = new User({
       id: entity.id,
       name: entity.name,
       email: new Email(entity.email),
@@ -22,6 +22,7 @@ export class UserMapper {
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     });
+    return user;
   }
 
   /**

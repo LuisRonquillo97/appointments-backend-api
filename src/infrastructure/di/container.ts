@@ -1,3 +1,6 @@
+import { JwtTokenAdapter } from '../adapters/api/jwtTokenAdapter';
+import { LoginUserCase } from '../../application/useCases/user/loginUser';
+import { TokenPort } from '../../domain/ports/tokenPort';
 import { DataSource } from 'typeorm';
 import { UserRepositoryImpl } from '../repositories/userRepositoryImpl';
 import { CreateUserUseCase } from '../../application/useCases/user/createUser';
@@ -52,6 +55,14 @@ export class Container {
     // Initialize domain services
     this.services.set('UserService', new UserService(this.get('UserRepository')));
 
+    this.services.set(
+      'TokenPort',
+      new JwtTokenAdapter(
+        process.env.JWT_SECRET || 'default-secret-key',
+        process.env.JWT_EXPIRES_IN || '24h',
+      ),
+    );
+
     // Initialize use cases
     this.services.set(
       'CreateUserUseCase',
@@ -86,6 +97,16 @@ export class Container {
       ),
     );
 
+    this.services.set(
+      'LoginUserCase',
+      new LoginUserCase(
+        this.get('UserRepository'),
+        this.get('UserService'),
+        this.get<TokenPort>('TokenPort'),
+        this.get<Logger>('Logger'),
+      ),
+    );
+
     // Initialize adapters
     this.services.set(
       'UserApiAdapter',
@@ -95,6 +116,7 @@ export class Container {
         this.get('ListUsersUseCase'),
         this.get('UpdateUserUseCase'),
         this.get('DeleteUserUseCase'),
+        this.get('LoginUserCase'),
       ),
     );
 

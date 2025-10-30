@@ -39,26 +39,6 @@ export class UserEntity {
   updatedAt!: Date;
 
   /**
-   * If the user has a password, hashes it.
-   * Runs before every insert and update.
-   */
-  @BeforeInsert()
-  @BeforeUpdate()
-  hashPassword() {
-    if (this.password) {
-      // Generate a random salt if not exists
-      if (!this.salt) {
-        this.salt = crypto.randomBytes(16).toString('hex');
-      }
-
-      // Hash the password with the salt
-      this.password = crypto
-        .pbkdf2Sync(this.password, this.salt, 1000, 64, 'sha512')
-        .toString('hex');
-    }
-  }
-
-  /**
    * Validates if the password is correct.
    * @param password Password to validate.
    * @returns True if the password is correct.

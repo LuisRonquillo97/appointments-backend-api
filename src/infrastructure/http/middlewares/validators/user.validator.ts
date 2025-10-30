@@ -52,3 +52,11 @@ export const updateUserValidator = [
     return true;
   }),
 ];
+
+/**
+ * Validation rules for user login
+ */
+export const loginUserValidator = [
+  body('email').isEmail().withMessage('Must be a valid email'),
+  body('password').notEmpty().withMessage('Password is required'),
+];
