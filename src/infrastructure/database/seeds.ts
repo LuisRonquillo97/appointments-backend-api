@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
+import { UserRole } from '../../domain/valueObjects/userRole';
 
 /**
  * Seeds a default user.
@@ -19,6 +20,7 @@ export async function seedDatabase(dataSource: DataSource): Promise<void> {
       name: 'Admin User',
       email: 'admin@example.com',
       password: 'admin123',
+      role: UserRole.ADMIN,
     });
 
     await userRepository.save(defaultUser);

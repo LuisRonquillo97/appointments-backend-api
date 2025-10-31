@@ -10,6 +10,7 @@ import { UserNotFoundError, UserUpdatingError } from '../../errors/userAppErrors
 import { DomainError } from '../../../domain/errors/domainError';
 import { AppError } from '../../errors/appError';
 import { Logger } from '../../../domain/ports/logger';
+import { Role } from '../../../domain/valueObjects/userRole';
 
 /**
  * Update user Use Case.
@@ -51,13 +52,17 @@ export class UpdateUserUseCase {
       }
 
       if (userData.email !== undefined && userData.email !== existingUser.email.toString()) {
-        await this.userService.validateUniqueEmail(userData.email);
+        await this.userService.validateUniqueEmailForUpdate(userData.email, id);
         existingUser.updateEmail(new Email(userData.email));
       }
 
       if (userData.password !== undefined) {
         const newPassword = Password.create(userData.password);
         existingUser.updatePassword(newPassword);
+      }
+
+      if (userData.role !== undefined) {
+        existingUser.updateRole(Role.create(userData.role));
       }
 
       // 3. Save changes

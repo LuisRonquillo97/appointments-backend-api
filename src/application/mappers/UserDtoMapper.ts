@@ -17,6 +17,7 @@ export class UserDtoMapper {
       id: user.id!,
       name: user.name,
       email: user.email.toString(),
+      role: user.role.toString(),
       createdAt: user.createdAt!,
       updatedAt: user.updatedAt!,
     };

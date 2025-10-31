@@ -4,6 +4,7 @@
 export interface CreateUserDto {
   name: string;
   email: string;
+  role?: string;
   password: string;
 }
 
@@ -13,6 +14,7 @@ export interface CreateUserDto {
 export interface UpdateUserDto {
   name?: string;
   email?: string;
+  role?: string;
   password?: string;
 }
 
@@ -32,6 +34,7 @@ export interface UserResponseDto {
   id: string;
   name: string;
   email: string;
+  role: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -40,6 +43,7 @@ export interface UserLoginResponseDto {
   id: string;
   name: string;
   email: string;
+  role: string;
   token: string;
   createdAt: Date;
   updatedAt: Date;

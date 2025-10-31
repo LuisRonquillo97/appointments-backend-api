@@ -2,6 +2,7 @@ import { User } from '../../domain/entities/user';
 import { Email } from '../../domain/valueObjects/email';
 import { Password } from '../../domain/valueObjects/password';
 import { UserEntity } from '../entities/user.entity';
+import { Role } from '../../domain/valueObjects/userRole';
 
 /**
  * User infrastructure mapper.
@@ -18,6 +19,7 @@ export class UserMapper {
       name: entity.name,
       email: new Email(entity.email),
       password: entity.password ? Password.fromHash(entity.password, entity.salt) : undefined,
+      role: Role.create(entity.role),
       isActive: entity.isActive,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -41,6 +43,7 @@ export class UserMapper {
       entity.password = domain.password.getHashedValue();
       entity.salt = domain.password.getSalt();
     }
+    entity.role = domain.role.toString();
     entity.isActive = domain.isActive;
     entity.createdAt = domain.createdAt || new Date();
     entity.updatedAt = domain.updatedAt || new Date();

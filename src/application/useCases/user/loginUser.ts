@@ -29,12 +29,14 @@ export class LoginUserCase {
         id: user.id,
         email: user.email.getValue(),
         name: user.name,
+        role: user.role.getValue(),
       });
 
       return {
         createdAt: new Date(),
         name: user.name,
         email: user.email.getValue(),
+        role: user.role.getValue(),
         id: user.id ?? '',
         updatedAt: new Date(),
         token,

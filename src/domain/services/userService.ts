@@ -22,4 +22,17 @@ export class UserService {
       throw new EmailAlreadyExistsError(email);
     }
   }
+
+  /**
+   * Validates that the email is unique for updates (excluding current user).
+   * @param email Email to validate.
+   * @param currentUserId ID of the user being updated.
+   * @throws EmailAlreadyExistsError if the email already exists for another active user.
+   */
+  async validateUniqueEmailForUpdate(email: string, currentUserId: string): Promise<void> {
+    const existingUser = await this.userRepository.findByEmail(email);
+    if (existingUser && existingUser.id !== currentUserId) {
+      throw new EmailAlreadyExistsError(email);
+    }
+  }
 }

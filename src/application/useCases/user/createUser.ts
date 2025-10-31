@@ -11,6 +11,7 @@ import { DomainError } from '../../../domain/errors/domainError';
 import { AppError } from '../../errors/appError';
 import { UserCreationError } from '../../errors/userAppErrors';
 import { Logger } from '../../../domain/ports/logger';
+import { Role, UserRole } from '../../../domain/valueObjects/userRole';
 
 /**
  * Use case for creating a new user.
@@ -47,6 +48,7 @@ export class CreateUserUseCase {
         name: userData.name.trim(),
         email: email,
         password: password,
+        role: Role.create(userData.role ?? UserRole.USER),
         createdAt: new Date(),
         updatedAt: new Date(),
       });

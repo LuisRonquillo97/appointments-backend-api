@@ -4,8 +4,6 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  BeforeInsert,
-  BeforeUpdate,
 } from 'typeorm';
 import * as crypto from 'crypto';
 
@@ -20,7 +18,7 @@ export class UserEntity {
   @Column()
   name!: string;
 
-  @Column({ unique: true })
+  @Column()
   email!: string;
 
   @Column()
@@ -28,6 +26,9 @@ export class UserEntity {
 
   @Column({ nullable: true })
   salt!: string;
+
+  @Column({ default: 'user' })
+  role!: string;
 
   @Column({ default: true })
   isActive!: boolean;

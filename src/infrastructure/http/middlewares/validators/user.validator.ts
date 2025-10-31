@@ -35,6 +35,7 @@ export const updateUserValidator = [
     .withMessage('Id must be a valid UUID'),
   body('name').optional().notEmpty().withMessage('Name is required'),
   body('email').optional().isEmail().withMessage('Must be a valid email'),
+  body('role').optional().notEmpty().withMessage('Role is required'),
   body('password')
     .optional()
     .notEmpty()
@@ -42,7 +43,7 @@ export const updateUserValidator = [
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long'),
   body().custom((body) => {
-    const allowedFields = ['name', 'email', 'password'];
+    const allowedFields = ['name', 'email', 'password', 'role'];
     const receivedFields = Object.keys(body);
 
     const invalidFields = receivedFields.filter((field) => !allowedFields.includes(field));

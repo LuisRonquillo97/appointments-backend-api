@@ -1,6 +1,7 @@
 import { InvalidUserDataError } from '../errors/userErrors';
 import { Email } from '../valueObjects/email';
 import { Password } from '../valueObjects/password';
+import { Role, UserRole } from '../valueObjects/userRole';
 
 /**
  * Domain entity representing a user.
@@ -10,6 +11,7 @@ export class User {
   name: string;
   email: Email;
   password?: Password;
+  role: Role;
   isActive: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -19,6 +21,7 @@ export class User {
     name: string;
     email: Email;
     password?: Password;
+    role?: Role;
     isActive?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
@@ -30,6 +33,7 @@ export class User {
     this.isActive = props.isActive !== undefined ? props.isActive : true;
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
+    this.role = props.role || new Role(UserRole.USER);
     this.validate();
   }
 
@@ -100,5 +104,31 @@ export class User {
   activate(): void {
     this.isActive = true;
     this.updatedAt = new Date();
+  }
+
+  /**
+   * Updates user's role.
+   * @param role New role
+   */
+  updateRole(role: Role): void {
+    this.role = role;
+    this.updatedAt = new Date();
+  }
+
+  /**
+   * Checks if user has specific role.
+   * @param role Role to check
+   * @returns True if user has the role
+   */
+  hasRole(role: UserRole): boolean {
+    return this.role.getValue() === role;
+  }
+
+  /**
+   * Checks if user is admin.
+   * @returns True if user is admin
+   */
+  isAdmin(): boolean {
+    return this.role.isAdmin();
   }
 }

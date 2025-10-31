@@ -2,12 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { Container } from '../../di/container';
 import { TokenPort } from '../../../domain/ports/tokenPort';
 import { ApiResponseFormatter } from '../utils/apiResponse';
+import { UserRole } from '../../../domain/valueObjects/userRole';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
     id: string;
     email: string;
     name: string;
+    role: UserRole;
   };
 }
 
@@ -37,6 +39,7 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
       id: decoded.id,
       email: decoded.email,
       name: decoded.name,
+      role: decoded.role,
     };
 
     next();
