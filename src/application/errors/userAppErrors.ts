@@ -4,7 +4,7 @@ import { AppError } from './appError';
  */
 export class UserNotFoundError extends AppError {
   constructor(id: string) {
-    super(`User with id ${id} not found`);
+    super(`${id}`);
     this.name = 'UserNotFoundError';
   }
 }
